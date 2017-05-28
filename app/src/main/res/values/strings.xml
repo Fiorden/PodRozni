@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Festiwal PodRóżni</string>
+
+    <string name="festivalWWW">http://festiwalpodrozni.pl/</string>
+    <string name="zabkowicelWWW">http://zabkowiceslaskie.pl//</string>
+    <string name="fbWWW">https://www.facebook.com/festiwalpodrozni//</string>
+    <string name="ytWWW">https://www.youtube.com/channel/UCWVoSOkPGTXBjvBhT4_75LA</string>
+    <string name="wnWWW">http://festiwalpodrozni.pl/media-i-partnerzy/</string>
+
+    <string name="title_activity_splash">Splash</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dialog_title">Przypomnij mi</string>
+    <string name="open">menu</string>
+    <string name="close">zamknij</string>
+
+    <string name="google_maps_key">AIzaSyC4CpjaVl7QVZo5abwjC5v9hXVlf2JkAUE</string>
+
+
+</resources>

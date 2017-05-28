@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="Dojazd" />
+    </group>
+
+    <item android:title="Linki">
+        <menu>
+            <item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/ic_home"
+                android:title="FestiwalPodRóżni.pl" />
+            <item
+                android:id="@+id/nav_FB"
+                android:icon="@drawable/ic_home"
+                android:title="Facebook" />
+            <item
+                android:id="@+id/nav_YT"
+                android:icon="@drawable/ic_home"
+                android:title="Youtube" />
+            <item
+                android:id="@+id/nav_WN"
+                android:icon="@drawable/ic_home"
+                android:title="Wsparli nas" />
+            <item
+                android:id="@+id/nav_zab"
+                android:icon="@drawable/ic_home"
+                android:title="Zabkowiceslaskie.pl" />
+
+        </menu>
+    </item>
+
+</menu>
