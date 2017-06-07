@@ -1,6 +1,7 @@
 package com.fjord.podrozni;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.PersistableBundle;
@@ -16,11 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.Window;
+import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.fjord.podrozni.Fragments.AktualnosciFragment;
 import com.fjord.podrozni.Fragments.Dzien1Fragment;
 import com.fjord.podrozni.Fragments.Dzien2Fragment;
 import com.fjord.podrozni.Fragments.Dzien3Fragment;
+import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(new Dzien1Fragment(), "Day 1");
-        viewPagerAdapter.addFragments(new Dzien2Fragment(), "Day 2");
-        viewPagerAdapter.addFragments(new Dzien3Fragment(), "Day 3");
+        viewPagerAdapter.addFragments(new Dzien1Fragment(), "Dzień 1");
+        viewPagerAdapter.addFragments(new Dzien2Fragment(), "Dzień 2");
+        viewPagerAdapter.addFragments(new Dzien3Fragment(), "Dzień 3");
         viewPagerAdapter.addFragments(new AktualnosciFragment(), "News");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -60,8 +65,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.nav_map:
+                    case R.id.nav_gmap:
                         goToMap();
+                        return false;
+                    case R.id.nav_map:
+                        showMapPop();
                         return false;
                     case R.id.nav_zab:
                         goToWww(getString(R.string.zabkowicelWWW));
@@ -112,6 +120,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,MapActivity.class);
         startActivity(intent);
 
+    }
+
+    private void showMapPop() {
+        Dialog settingsDialog = new Dialog(this);
+        settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.map
+                , null));
+        settingsDialog.show();
+        ImageView map = (ImageView)  settingsDialog.findViewById(R.id.map_file);
+        Picasso.with(this).load(R.drawable.mapa).into(map);
     }
 
 

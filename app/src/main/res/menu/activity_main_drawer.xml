@@ -4,9 +4,13 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/nav_gmap"
+            android:icon="@drawable/ic_directions_car_black_24dp"
+            android:title="Dojazd" />
+        <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map_black_24dp"
-            android:title="Dojazd" />
+            android:title="Mapa" />
     </group>
 
     <item android:title="Linki">
@@ -17,19 +21,19 @@
                 android:title="FestiwalPodRóżni.pl" />
             <item
                 android:id="@+id/nav_FB"
-                android:icon="@drawable/ic_home"
+                android:icon="@drawable/ic_face_black_24dp"
                 android:title="Facebook" />
             <item
                 android:id="@+id/nav_YT"
-                android:icon="@drawable/ic_home"
+                android:icon="@drawable/ic_ondemand_video_black_24dp"
                 android:title="Youtube" />
             <item
                 android:id="@+id/nav_WN"
-                android:icon="@drawable/ic_home"
+                android:icon="@drawable/ic_people_black_24dp"
                 android:title="Wsparli nas" />
             <item
                 android:id="@+id/nav_zab"
-                android:icon="@drawable/ic_home"
+                android:icon="@drawable/ic_location_city_black_24dp"
                 android:title="Zabkowiceslaskie.pl" />
 
         </menu>

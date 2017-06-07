@@ -1,6 +1,7 @@
 package com.fjord.podrozni.Fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.fjord.podrozni.DatabaseHandler;
 import com.fjord.podrozni.EventAdapter;
 import com.fjord.podrozni.Events;
 import com.fjord.podrozni.Pop;
 import com.fjord.podrozni.R;
+import com.fjord.podrozni.Reminder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,10 +44,15 @@ import java.net.URL;
  */
 public class Dzien1Fragment extends Fragment {
 
+    // 02/06/2017
+    long dayDate = 1486335600000l;
+
     String json_string;
     View view;
     EventAdapter eventAdapter;
     ListView listView;
+    DatabaseHandler db;
+    int currentPosition;
 
 
     public Dzien1Fragment() {
@@ -61,6 +69,7 @@ public class Dzien1Fragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listview1);
         eventAdapter = new EventAdapter(getActivity(), R.layout.row_layout);
         listView.setAdapter(eventAdapter);
+        db = new DatabaseHandler(getContext());
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(new File(getActivity().getCacheDir(), "json") + "cacheFile.srl")));
             json_string = (String) in.readObject();
@@ -68,9 +77,10 @@ public class Dzien1Fragment extends Fragment {
             JSONObject jsonObject = new JSONObject(json_string);
             JSONArray jsonArray = jsonObject.getJSONArray("dayone");
             int count = 0;
-            String title, image, info,info_short, start, end, map;
+            String id, title, image, info,info_short, start, end, map;
             while (count < jsonArray.length()) {
                 JSONObject JO = jsonArray.getJSONObject(count);
+                id = JO.getString("id");
                 title = JO.getString("title");
                 image = JO.getString("image");
                 info = JO.getString("info");
@@ -78,7 +88,12 @@ public class Dzien1Fragment extends Fragment {
                 start = JO.getString("start");
                 end = JO.getString("end");
                 map = JO.getString("map");
-                Events events = new Events(title,image,info,info_short, start, end, map);
+                Events events = new Events(id, title,image,info,info_short, start, end, map);
+                for (Reminder r : db.getAllReminders()){
+                    if (r.getId()==events.getId()){
+                        events.setRemind(true);
+                    }
+                }
                 eventAdapter.add(events);
 
                 count++;
@@ -100,8 +115,9 @@ public class Dzien1Fragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(),Pop.class);
                 intent.putExtra("Details",(Serializable) eventAdapter.getItem(position));
+                currentPosition = position;
 
-                startActivity(intent);
+                startActivityForResult(intent,2);
 
             }
         } );
@@ -112,7 +128,38 @@ public class Dzien1Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        eventAdapter.notifyDataSetChanged();
-        listView.invalidateViews();
+
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != Activity.RESULT_CANCELED){
+        if(requestCode==2)
+        {
+            Events event = (Events) eventAdapter.getItem(currentPosition);
+            int time = Integer.parseInt(data.getStringExtra("TIME"));
+
+            if (time!=0) {
+                event.setRemind(true);
+                String[] timeString = event.getStart().split(":");
+                int hour = Integer.parseInt ( timeString[0].trim() );
+                int min = Integer.parseInt ( timeString[1].trim() );
+                long timeMilis = hour*1000*60*60+min*1000*60-time;
+                long eventTime = dayDate + timeMilis;
+                Reminder reminder = new Reminder(event.getId(), eventTime);
+                db.addReminder(reminder);
+            }
+            else {
+                event.setRemind(false);
+                Reminder reminder = new Reminder(event.getId(), 0);
+                db.delReminder(reminder);
+            }
+
+            eventAdapter.notifyDataSetChanged();
+        }
+    }}
+
 }

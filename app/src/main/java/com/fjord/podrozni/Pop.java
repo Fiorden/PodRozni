@@ -6,12 +6,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -31,6 +29,7 @@ public class Pop extends Activity {
     TextView title, info, infoShort;
     ImageView img;
     Events event;
+    Integer notifyMinsBefore = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,14 +127,19 @@ public class Pop extends Activity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        event.setRemind(true);
+                        Intent intent=new Intent();
+
+                        long remindTime =  notifyMinsBefore *1000*60;
+                        intent.putExtra("TIME",String.valueOf(remindTime));
+                        setResult(2,intent);
                     }
                 })
                 .setNegativeButton("Jednak nie", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        event.setRemind(false);
-                        event.setTitle("Dupa");
+                        Intent intent=new Intent();
+                        intent.putExtra("TIME","0");
+                        setResult(2,intent);
 
                     }
                 });
@@ -153,7 +157,8 @@ public class Pop extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-               textView.setText(progress + 5 + " minut przed.");
+                notifyMinsBefore = progress + 5;
+               textView.setText(notifyMinsBefore + " minut przed.");
 
 
             }

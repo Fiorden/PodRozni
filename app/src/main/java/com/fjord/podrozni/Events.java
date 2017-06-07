@@ -13,6 +13,7 @@ import  com.fjord.podrozni.R.string.*;
 
 public class Events implements Serializable {
 
+    private String id;
     private String title;
     private String image;
     private String map;
@@ -25,8 +26,10 @@ public class Events implements Serializable {
 
 
     private Boolean remind = false;
-    public Events(String title, String image, String info,String info_short, String start, String end, String map){
 
+    public Events(String id, String title, String image, String info, String info_short, String start, String end, String map){
+
+        this.setId(id);
         this.setTitle(title);
         this.setImage(image);
         this.setInfo(info);
@@ -36,6 +39,10 @@ public class Events implements Serializable {
         this.setMap(map);
     }
 
+
+    public int getId() {return Integer.parseInt(id);}
+
+    public void setId(String id) {this.id = id;}
 
     public String getTitle() {
         return title;
